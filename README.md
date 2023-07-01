@@ -1,21 +1,31 @@
 # IconvAll.Git
 
-**TODO: Add description**
+This is an Elixir library that performs encoding conversion using `iconv` on
+files in a Git repository. I am trying to analyse some legacy Git repositories
+that contains files encoded in legacy non-UTF-8 character sets, which are not
+supported by some modern developer tools.
+
+This library performs conversion on files in a Git repository while maintaining
+the original directory structure, so it would be especially useful for code
+analysis of legacy repositories. A new branch is created from the HEAD commit of
+a branch, which will be checked out in a separate working tree.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `git_iconv` to your list of dependencies in `mix.exs`:
+This library is not available on Hex yet.
+
+``` elixir
+Mix.install([
+  {:iconv_all_git, "~> 0.1.0"}
+])
+```
+
+or
 
 ```elixir
 def deps do
   [
-    {:git_iconv, "~> 0.1.0"}
+    {:iconv_all_git, "~> 0.1.0"}
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/git_iconv>.
-
