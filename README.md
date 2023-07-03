@@ -10,6 +10,9 @@ the original directory structure, so it would be especially useful for code
 analysis of legacy repositories. A new branch is created from the HEAD commit of
 a branch, which will be checked out in a separate working tree.
 
+Also see [kino_iconv_all_git](https://github.com/akirak/kino_iconv_all), which
+is a companion to this library.
+
 ## Installation
 
 This library is not available on Hex yet.
