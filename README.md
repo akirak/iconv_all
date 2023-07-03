@@ -19,7 +19,7 @@ This library is not available on Hex yet.
 
 ``` elixir
 Mix.install([
-  {:iconv_all_git, "~> 0.1.0"}
+  {:iconv_all_git, "~> 0.1.0", github: "akirak/iconv_all"}
 ])
 ```
 
@@ -28,7 +28,7 @@ or
 ```elixir
 def deps do
   [
-    {:iconv_all_git, "~> 0.1.0"}
+    {:iconv_all_git, "~> 0.1.0", github: "akirak/iconv_all"}
   ]
 end
 ```
