@@ -20,7 +20,7 @@ defmodule IconvAll.Git.Xml do
            s
          else
            Regex.replace(
-             ~r/\bencoding=(\s*["']?)[-_A-Za-z0-9]+(["']?)\b/,
+             ~r/\bencoding=(\s*["']?)[-_.:A-Za-z0-9]+(["']?)\b/,
              s,
              "encoding=\\1#{target_encoding}\\2",
              # Replace only once.
