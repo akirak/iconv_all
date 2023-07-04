@@ -13,6 +13,7 @@ defmodule IconvAll.Git do
           :source_encoding => String.t(),
           :target_encoding => String.t(),
           # optional(:force) => bool,
+          optional(:discard) => bool,
           optional(:xml_support) => bool
         }
 
@@ -25,6 +26,7 @@ defmodule IconvAll.Git do
           :source_encoding => String.t(),
           :target_encoding => String.t(),
           # optional(:force) => bool,
+          optional(:discard) => bool,
           optional(:xml_support) => bool
         }
 
@@ -117,7 +119,14 @@ defmodule IconvAll.Git do
       GitUtils.remove_worktree_if_exists(config.repo, target_branch)
 
       with {:ok, _} <-
-             GitUtils.run(config.repo, ["worktree", "add", "-B", target_branch, path, source_commit]),
+             GitUtils.run(config.repo, [
+               "worktree",
+               "add",
+               "-B",
+               target_branch,
+               path,
+               source_commit
+             ]),
            do: iconv_and_git_commit(path, config)
     end
   end
@@ -147,7 +156,8 @@ defmodule IconvAll.Git do
                Iconv.convert_file_tmp(
                  file,
                  config.source_encoding,
-                 config.target_encoding
+                 config.target_encoding,
+                 discard: Map.get(config, :discard, false)
                ),
              {:ok, newtmp} <- postprocess_file(tmp, Map.put(config, :filename, file)),
              do: File.copy(newtmp, file)
