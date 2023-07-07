@@ -138,6 +138,10 @@ defmodule IconvAll.Git do
          {:ok, _} <-
            GitUtils.run(path, [
              "commit",
+             # If no file matches the pattern, the operation will be a noop, but
+             # allow the commit anyway because it is tedious to tweak the
+             # configuration.
+             "--allow-empty",
              "-a",
              "-m",
              "Converted files to #{config.target_encoding} using iconv"
