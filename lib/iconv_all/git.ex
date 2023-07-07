@@ -190,6 +190,6 @@ defmodule IconvAll.Git do
 
   @spec cache_dir() :: Path.t()
   defp cache_dir do
-    :filename.basedir(:user_cache, "git_iconv")
+    :filename.basedir(:user_cache, "ex_iconv_all_git")
   end
 end
