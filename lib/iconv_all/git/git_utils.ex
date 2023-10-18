@@ -9,19 +9,19 @@ defmodule IconvAll.Git.GitUtils do
   @spec rev_parse(Path.t(), String.t()) ::
           {:ok, String.t()} | {:error, %{reason: String.t()}}
   def rev_parse(repo, commitish) do
-    with {out, 0} <-
-           System.cmd(
-             "git",
-             ["rev-parse", commitish],
-             cd: repo,
-             stderr_to_stdout: true
-           ) do
-      {:ok, String.trim(out)}
-    else
-      {out, _} ->
+    case System.cmd(
+           "git",
+           ["rev-parse", commitish],
+           cd: repo,
+           stderr_to_stdout: true
+         ) do
+      {out, 0} ->
+        {:ok, String.trim(out)}
+
+      {out, r} ->
         {:error,
          %{
-           reason: out
+           reason: "git rev-parse failed with exit code #{r}: #{out}"
          }}
     end
   end
@@ -88,8 +88,8 @@ defmodule IconvAll.Git.GitUtils do
       {out, 0} ->
         {:ok, out}
 
-      {_, r} ->
-        {:error, %{reason: "git #{Enum.join(args, " ")} failed with #{r}"}}
+      {out, r} ->
+        {:error, %{reason: "git #{Enum.join(args, " ")} failed with #{r}: #{out}"}}
     end
   end
 end
