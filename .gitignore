@@ -24,3 +24,5 @@ git_iconv-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+.pre-commit-config.yaml
