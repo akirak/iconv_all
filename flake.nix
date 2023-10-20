@@ -62,7 +62,12 @@
         src = ./.;
         hooks = {
           mix-format.enable = true;
-          # credo.enable = true;
+          credo = {
+            enable = true;
+            stages = [
+              "push"
+            ];
+          };
           dialyzer = {
             enable = true;
             stages = [
