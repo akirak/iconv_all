@@ -66,7 +66,7 @@
           dialyzer = {
             enable = true;
             stages = [
-              "push"
+              "commit"
             ];
           };
           mix-test = {
