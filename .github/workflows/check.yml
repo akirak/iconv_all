@@ -24,4 +24,6 @@ jobs:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-    - run: nix flake check
+    - run: nix develop -c mix deps.get
+
+    - run: nix flake check --print-build-logs
