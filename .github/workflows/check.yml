@@ -27,5 +27,6 @@ jobs:
     - run: nix develop -c mix local.hex --force
 
     - run: nix develop -c mix deps.get
+    - run: nix develop -c mix deps.compile
 
     - run: nix flake check --print-build-logs
