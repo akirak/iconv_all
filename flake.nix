@@ -35,7 +35,7 @@
             overlays = [
               (_: prev: {
                 inherit erlang elixir;
-                inherit (beamPackages) elixir-ls;
+                inherit (beamPackages) elixir-ls hex;
 
                 elixirEnv = pkgs.callPackage ./elixir-env.nix {
                   inherit elixir beamPackages;
@@ -53,9 +53,12 @@
       with pkgs; {
         default = mkShell {
           buildInputs = [
-            erlang
+            # elixir
+            # elixir-ls
+            pkgs.elixirEnv
+            hex
             elixir
-            elixir-ls
+            erlang
           ];
 
           inherit (self.checks.${system}.pre-commit-check) shellHook;

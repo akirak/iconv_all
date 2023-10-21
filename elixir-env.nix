@@ -2,6 +2,7 @@
   runCommand,
   makeWrapper,
   elixir,
+  erlang,
   mixDeps,
   beamPackages,
   lib,
@@ -11,7 +12,8 @@
     depSrc="${depAttrs}/src"
     if [[ -d "$depSrc" ]]
     then
-      ln -s "$depSrc" "$depPath"
+      mkdir -p "$depPath"
+      cp -rp "$depSrc" "$depPath"
     fi
   '';
 in
@@ -40,13 +42,13 @@ in
 
     cd $out/share
 
+    LC_ALL=C.UTF-8 MIX_ENV=dev mix deps.compile --no-deps-check
+
     makeWrapper ${elixir}/bin/mix $out/bin/mix \
        --prefix PATH : "${elixir}" \
        --prefix PATH : "${beamPackages.hex}" \
+       --prefix PATH : "${erlang}" \
        --set LC_ALL "C.UTF-8" \
        --set HEX_OFFLINE 1 \
-       --set MIX_ENV dev \
-       --set MIX_HOME "''${MIX_HOME}" \
-       --set HEX_HOME "''${HEX_HOME}" \
-       --set MIX_DEPS_PATH "''${MIX_DEPS_PATH}"
+       --set MIX_ENV dev
   ''
