@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - master
+    - main
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -19,9 +19,34 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: actions/cache@v3
+      with:
+        path: |
+          deps
+          _build
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-mix-
+
     - uses: cachix/install-nix-action@v23
       with:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-    - run: nix flake check
+    - run: nix profile install .#elixir
+
+    - run: |
+        mix local.hex --force
+        mix deps.get
+        mix deps.compile
+
+    - run: mix format
+
+    - run: mix dialyzer
+
+    # - run: mix credo
+
+    - run: mix test
+
+    # Check the flake outputs
+    # - run: nix flake check

@@ -41,6 +41,12 @@
           })
       );
   in {
+    packages = eachSystem (
+      pkgs: {
+        inherit (pkgs) elixir;
+      }
+    );
+
     devShells = eachSystem (pkgs:
       with pkgs; {
         default = mkShell {
@@ -52,7 +58,6 @@
 
           inherit (self.checks.${system}.pre-commit-check) shellHook;
 
-          LANG = "C.UTF-8";
           ERL_AFLAGS = "-kernel shell_history enabled";
         };
       });
@@ -62,19 +67,6 @@
         src = ./.;
         hooks = {
           mix-format.enable = true;
-          # credo.enable = true;
-          dialyzer = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
-          mix-test = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
         };
       };
     });
