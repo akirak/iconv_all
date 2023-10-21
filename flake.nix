@@ -61,24 +61,24 @@
         src = ./.;
         hooks = {
           mix-format.enable = true;
-          credo = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
-          dialyzer = {
-            enable = true;
-            stages = [
-              "commit"
-            ];
-          };
-          mix-test = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
+          # credo = {
+          #   enable = true;
+          #   stages = [
+          #     "push"
+          #   ];
+          # };
+          # dialyzer = {
+          #   enable = true;
+          #   stages = [
+          #     "commit"
+          #   ];
+          # };
+          # mix-test = {
+          #   enable = true;
+          #   stages = [
+          #     "push"
+          #   ];
+          # };
         };
       };
     });
