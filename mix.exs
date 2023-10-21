@@ -21,6 +21,8 @@ defmodule IconvAll.Git.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:briefly, "~> 0.4"}
     ]
   end
