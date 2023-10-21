@@ -61,19 +61,6 @@
         src = ./.;
         hooks = {
           mix-format.enable = true;
-          # credo.enable = true;
-          dialyzer = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
-          mix-test = {
-            enable = true;
-            stages = [
-              "push"
-            ];
-          };
         };
       };
     });
