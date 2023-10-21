@@ -41,6 +41,12 @@
           })
       );
   in {
+    packages = eachSystem (
+      pkgs: {
+        inherit (pkgs) elixir;
+      }
+    );
+
     devShells = eachSystem (pkgs:
       with pkgs; {
         default = mkShell {

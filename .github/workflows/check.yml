@@ -24,4 +24,20 @@ jobs:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-    - run: nix flake check
+    - run: nix profile install .#elixir
+
+    - run: |
+        mix local.hex --force
+        mix deps.get
+        mix deps.compile
+
+    - run: mix format
+
+    - run: mix dialyzer
+
+    # - run: mix credo
+
+    - run: mix test
+
+    # Check the flake outputs
+    # - run: nix flake check
