@@ -19,6 +19,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: actions/cache@v3
+      with:
+        path: |
+          deps
+          _build
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-mix-
+
     - uses: cachix/install-nix-action@v23
       with:
         extra_nix_config: |
