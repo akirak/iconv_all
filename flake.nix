@@ -36,6 +36,14 @@
               (_: prev: {
                 inherit erlang elixir;
                 inherit (beamPackages) elixir-ls;
+
+                elixirEnv = pkgs.callPackage ./elixir-env.nix {
+                  inherit elixir beamPackages;
+                  mixDeps = import ./mix_deps.nix {
+                    inherit beamPackages;
+                    inherit (nixpkgs) lib;
+                  };
+                };
               })
             ];
           })
@@ -56,11 +64,21 @@
         };
       });
 
-    checks = eachSystem (pkgs: {
+    checks = eachSystem (pkgs: let
+    in {
       pre-commit-check = pre-commit-hooks.lib.${pkgs.system}.run {
         src = ./.;
         hooks = {
           mix-format.enable = true;
+
+          custom-dialyzer = {
+            enable = true;
+            name = "Elixir Dialyzer";
+            files = "\\.exs?$";
+            pass_filenames = true;
+            entry = "${pkgs.elixirEnv}/bin/mix dialyzer --no-deps-check";
+          };
+
           # credo = {
           #   enable = true;
           #   stages = [
