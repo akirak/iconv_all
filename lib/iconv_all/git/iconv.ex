@@ -35,8 +35,8 @@ defmodule IconvAll.Git.Iconv do
       {_, 0} ->
         {:ok, nil}
 
-      _ ->
-        {:error, %{reason: "iconv failed on #{source_file}"}}
+      {out, n} ->
+        {:error, %{reason: "iconv failed with exit #{n} on #{source_file}: #{out}"}}
     end
   end
 end
