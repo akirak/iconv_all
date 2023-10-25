@@ -53,12 +53,20 @@
     devShells = eachSystem (pkgs:
       with pkgs; {
         default = mkShell {
-          buildInputs = [
-            erlang
-            elixir
-            # elixir-ls
-            next-ls
-          ];
+          buildInputs =
+            [
+              erlang
+              elixir
+              # elixir-ls
+              next-ls
+            ]
+            ++ lib.optional stdenv.isLinux inotify-tools
+            ++ (
+              lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+                CoreFoundation
+                CoreServices
+              ])
+            );
 
           inherit (self.checks.${system}.pre-commit-check) shellHook;
 
