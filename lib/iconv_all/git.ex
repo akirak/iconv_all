@@ -8,6 +8,9 @@ defmodule IconvAll.Git do
 
   @type config :: %{
           :repo => Path.t(),
+          # Specify the output directory. Must be a non-existent path, otherwise
+          # it will throw an error.
+          optional(:out_dir) => Path.t(),
           :pattern => String.t(),
           :branch => String.t(),
           :source_encoding => String.t(),
@@ -56,23 +59,33 @@ defmodule IconvAll.Git do
 
     # Determine the path to the created working tree.
     path =
-      Path.join(
-        # The working trees are stored in a centralised location.
-        cache_dir(),
-        Path.basename(config.repo) <>
-          make_suffix(
-            # A separate working tree should be created whenever the upstream
-            # branch is updated or the configuration changes.
-            source_commit,
-            String.slice(
-              Base.encode16(:crypto.hash(:md5, :erlang.term_to_binary(config)), case: :lower),
-              0..5
-            ),
-            # Make the directory name indicate the content encoding for user
-            # friendliness.
-            config.target_encoding
-          )
-      )
+      if is_nil(config.out_dir) do
+        Path.join(
+          # The working trees are stored in a centralised location.
+          cache_dir(),
+          Path.basename(config.repo) <>
+            make_suffix(
+              # A separate working tree should be created whenever the upstream
+              # branch is updated or the configuration changes.
+              source_commit,
+              String.slice(
+                Base.encode16(:crypto.hash(:md5, :erlang.term_to_binary(config)), case: :lower),
+                0..5
+              ),
+              # Make the directory name indicate the content encoding for user
+              # friendliness.
+              config.target_encoding
+            )
+        )
+      else
+        if File.exists?(config.out_dir) do
+          throw("""
+          Directory \"#{config.out_dir}\" which is specified as out_dir of the config already exists
+          """)
+        else
+          config.out_dir
+        end
+      end
 
     # Add a fixed prefix allows the user to easily filtering non-production
     # branches. And deduplicating branches hopefully allows garbage collection
@@ -163,7 +176,13 @@ defmodule IconvAll.Git do
                  config.target_encoding,
                  discard: Map.get(config, :discard, false)
                ),
-             {:ok, newtmp} <- postprocess_file(tmp, Map.put(config, :filename, file)),
+             {:ok, newtmp} <-
+               postprocess_file(
+                 tmp,
+                 config
+                 |> Map.delete(:out_dir)
+                 |> Map.put(:filename, file)
+               ),
              do: File.copy(newtmp, file)
 
       r ->
