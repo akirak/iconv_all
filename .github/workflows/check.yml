@@ -51,6 +51,8 @@ jobs:
 
     # - run: mix credo
 
+    - run: nix develop -c nextls --version
+
     # - run: mix test
 
     # Check the flake outputs
