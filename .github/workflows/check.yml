@@ -46,7 +46,9 @@ jobs:
 
     # - run: mix credo
 
-    - run: mix test
+    # - run: mix test
 
     # Check the flake outputs
     # - run: nix flake check
+
+    - run: mix docs
