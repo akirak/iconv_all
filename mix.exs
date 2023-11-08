@@ -35,6 +35,7 @@ defmodule IconvAll.Git.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:mix_test_watch, "~> 1.1", only: [:dev, :test], runtime: false},
       {:briefly, "~> 0.4"}
     ]
   end
