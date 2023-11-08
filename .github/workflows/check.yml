@@ -33,6 +33,11 @@ jobs:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
+    - uses: cachix/cachix-action@v12
+      with:
+        name: akirak
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
     - run: nix profile install .#elixir
 
     - run: |
@@ -45,6 +50,8 @@ jobs:
     - run: mix dialyzer
 
     # - run: mix credo
+
+    - run: nix develop -c nextls --version
 
     # - run: mix test
 

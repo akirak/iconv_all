@@ -6,6 +6,7 @@
     inputs.flake-utils.follows = "flake-utils";
   };
   inputs.systems.url = "github:nix-systems/default";
+  inputs.next-ls.url = "github:elixir-tools/next-ls";
 
   outputs = {
     self,
@@ -13,6 +14,7 @@
     systems,
     flake-utils,
     pre-commit-hooks,
+    ...
   } @ inputs: let
     # Set the Erlang version
     erlangVersion = "erlang_25";
@@ -35,7 +37,8 @@
             overlays = [
               (_: prev: {
                 inherit erlang elixir;
-                inherit (beamPackages) elixir-ls;
+                # inherit (beamPackages) elixir-ls;
+                next-ls = inputs.next-ls.packages.${system}.default;
               })
             ];
           })
@@ -53,7 +56,8 @@
           buildInputs = [
             erlang
             elixir
-            elixir-ls
+            # elixir-ls
+            next-ls
           ];
 
           inherit (self.checks.${system}.pre-commit-check) shellHook;
