@@ -1,6 +1,9 @@
 defmodule IconvAll.GitTest do
   use ExUnit.Case, async: false
 
+  alias IconvAll.Git
+  alias IconvAll.Git.GitUtils
+
   @moduletag :tmp_dir
 
   describe "convert plain text files" do
@@ -46,6 +49,7 @@ defmodule IconvAll.GitTest do
 
     case File.mkdir(origin) do
       :ok ->
+        GitUtils.run(origin, ["init"])
         {:ok, [origin: origin, out_dir: out_dir]}
 
       err ->
